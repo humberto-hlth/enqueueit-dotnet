@@ -4,7 +4,7 @@
     <Title>EnqueueIt.Redis</Title>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <Version>0.3.2</Version>
+    <Version>0.3.3</Version>
     <Authors>Ahmed Abudaqqa</Authors>
     <Product>EnqueueIt.Redis</Product>
     <Company>Cyber Cloud Systems LLC</Company>
@@ -28,7 +28,7 @@
     </RestoreAdditionalProjectSources>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EnqueueIt" Version="0.3.2" />
+    <PackageReference Include="EnqueueIt" Version="0.3.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
   </ItemGroup>
   <ItemGroup>

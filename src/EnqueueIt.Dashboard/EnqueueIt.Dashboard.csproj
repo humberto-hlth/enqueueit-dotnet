@@ -2,9 +2,9 @@
   <PropertyGroup>
     <Id>EnqueueIt.Dashboard</Id>
     <Title>EnqueueIt.Dashboard</Title>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <Version>0.3.2</Version>
+    <Version>0.3.3</Version>
     <Authors>Ahmed Abudaqqa</Authors>
     <Product>EnqueueIt.Dashboard</Product>
     <Company>Cyber Cloud Systems LLC</Company>
@@ -32,6 +32,6 @@
     <None Include="wwwroot/images/logo.png" Pack="true" PackagePath=""/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EnqueueIt" Version="0.3.2" />
+    <PackageReference Include="EnqueueIt" Version="0.3.3" />
   </ItemGroup>
 </Project>
