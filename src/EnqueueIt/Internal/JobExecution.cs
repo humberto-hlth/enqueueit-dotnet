@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EnqueueIt.Internal
@@ -116,8 +117,17 @@ namespace EnqueueIt.Internal
                 {
                     if (argType.IsEnum)
                         return Enum.Parse(argType, arg.Value);
-                    else
+                    else if (argType != typeof(Guid))
+                    {
                         return Convert.ChangeType(arg.Value, Nullable.GetUnderlyingType(argType) ?? argType);
+                    }
+                    // Added following lines for supporting Guid Arguments by reflecion that were not supported in the base code
+                    else if (argType == typeof(Guid) && Guid.TryParse(arg.Value, out var guidResult))
+                    {
+                        return guidResult;
+                    }
+                    else
+                        throw new Exception($"Unsupported type for argument. ({argType})");
                 }
                 else
                     return JsonSerializer.Deserialize(arg.Value, argType);
