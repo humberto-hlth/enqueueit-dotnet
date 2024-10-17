@@ -67,7 +67,8 @@
                     duration: 50000,
                     refresh: 5000,
                     onRefresh: function(chart) {
-                        $.ajax({url: 'EnqueueIt/GetJobs', data: { },
+                        $.ajax({
+                            url: '@Url.Action("GetJobs")', data: {},
                             xhrFields: { withCredentials: true }}).done(function(result) {
                             var today = Object.keys(result.data)[0];
                             if (Object.keys(latest).length > 0) {
@@ -168,7 +169,7 @@
         $('.btn-sm').removeClass('active');
         $(`.${days}days`).addClass('active');
         days = days;
-        $.ajax({url: 'EnqueueIt/GetJobs?days=' + days, data: { }, xhrFields: { withCredentials: true }}).done(function(result) {
+        $.ajax({ url: '@Url.Action("GetJobs")' + `?days=${days}`, data: {}, xhrFields: { withCredentials: true } }).done(function (result) {
             config1.data.labels = [];
             config1.data.datasets[0].data = [];
             config1.data.datasets[1].data = [];
