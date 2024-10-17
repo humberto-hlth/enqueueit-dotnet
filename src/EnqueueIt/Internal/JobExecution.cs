@@ -97,8 +97,12 @@ namespace EnqueueIt.Internal
                 if (obj == null)
                     obj = Activator.CreateInstance(classType);
             }
-            classType.GetMethods().First(m => m.MetadataToken == jobArgument.MetadataToken)
+            var result = classType.GetMethods().First(m => m.MetadataToken == jobArgument.MetadataToken)
                 .Invoke(obj, jobArgs.ToArray());
+            if (result is Task T) 
+            {
+                T.Wait();
+            }
             if (scope != null)
                 scope.Dispose();
         }
