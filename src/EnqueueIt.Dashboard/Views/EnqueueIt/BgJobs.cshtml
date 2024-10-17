@@ -63,6 +63,7 @@
                     <th style="width: 0;"></th>
                     <th>Job Id</th>
                     <th>Job</th>
+                    <th>Queue</th>
                     @if (Model.Status == JobStatus.Processing.ToString())
                     {
                     <th>Started At</th>
@@ -104,6 +105,9 @@
                                 </div>
                             }
                             @(job.Name ?? string.Format("{0}.{1}()", job.ClassType, job.MethodName))
+                        </td>
+                        <td>
+                            @(job.Queue)
                         </td>
                         @if (job.Status == JobStatus.Processing)
                         {
