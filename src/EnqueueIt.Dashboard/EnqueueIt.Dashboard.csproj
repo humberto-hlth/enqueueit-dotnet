@@ -29,9 +29,9 @@
     </RestoreAdditionalProjectSources>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="wwwroot/images/logo.png" Pack="true" PackagePath=""/>
+    <None Include="wwwroot/images/logo.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EnqueueIt" Version="0.3.3" />
+    <ProjectReference Include="..\EnqueueIt\EnqueueIt.csproj" />
   </ItemGroup>
 </Project>
