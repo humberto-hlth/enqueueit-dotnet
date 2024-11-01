@@ -169,7 +169,7 @@ namespace EnqueueIt.Internal
                     }
                     GlobalConfiguration.Current.Storage.SaveBackgroundJob(bgJob);
                     if (bgJob.Status == JobStatus.Failed)
-                        GlobalConfiguration.Current.Logger.LogError($"{bgJob.Job.Type} {bgJobId} is Failed, reason: {bgJob.Error.Message}");
+                        GlobalConfiguration.Current.Logger.LogError($"JobId [{bgJobId}] - [{bgJob.Job?.JobArgument?.MethodName}] in Queue [{bgJob.Job.Queue}] has Failed! Reason: {bgJob.Error.Message} - Arguments: [{string.Join(", ",bgJob.Job?.JobArgument?.Arguments.Select(x => string.Concat(x.Name, ":", x.Value)))}]");
                     else
                         GlobalConfiguration.Current.Logger.LogDebug($"{bgJob.Job.Type} {bgJobId} is {bgJob.Status}");
                 }
