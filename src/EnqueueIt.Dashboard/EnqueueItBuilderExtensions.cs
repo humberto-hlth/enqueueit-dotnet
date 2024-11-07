@@ -22,6 +22,7 @@ namespace EnqueueIt
     {
         public static IApplicationBuilder UseEnqueueItDashboard(this IApplicationBuilder app, string routePrefix = null)
         {
+            var x = app.ApplicationServices.GetService(typeof(GlobalConfiguration));
             if (string.IsNullOrWhiteSpace(routePrefix))
                 routePrefix = "/EnqueueIt";
             app.UseEndpoints(endpoints =>
