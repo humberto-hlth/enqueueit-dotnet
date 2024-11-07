@@ -28,7 +28,7 @@ namespace EnqueueIt
         {
             string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "enqueueit.json");
             var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            string jsonEnvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"EnqueueIt.{env}.json");
+            string jsonEnvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"enqueueit.{env}.json");
             if (File.Exists(jsonEnvPath))
                 PopulateConfig(jsonEnvPath);
             else if (File.Exists(jsonPath))
