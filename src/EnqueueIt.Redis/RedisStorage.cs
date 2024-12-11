@@ -1,4 +1,4 @@
-﻿// EnqueueIt
+// EnqueueIt
 // Copyright © 2023 Cyber Cloud Systems LLC
 
 // This program is free software: you can redistribute it and/or modify
@@ -499,7 +499,7 @@ namespace EnqueueIt.Redis
         public void DeleteExpired()
         {
             DateTime expiryDate = DateTime.UtcNow.AddDays(-GlobalConfiguration.Current.Configuration.StorageExpirationInDays);
-            foreach (JobStatus status in new[] { JobStatus.Processed, JobStatus.Failed })
+            foreach (JobStatus status in new[] { JobStatus.Processed, JobStatus.Canceled, JobStatus.Interrupted, JobStatus.Failed })
             {
                 string key = status.ToString("D");
                 long i = db.ListLength(key) - 1;
@@ -508,14 +508,13 @@ namespace EnqueueIt.Redis
                     if (!string.IsNullOrWhiteSpace(bgJobId))
                     {
                         var bgJob = GetBackgroundJob(Guid.Parse(bgJobId), false);
-                        if (bgJob.CompletedAt.Value.Date < expiryDate)
-                            DeleteBackgroundJob(bgJob.Id);
-                        else
-                            break;
+                        if (bgJob != null && bgJob.CompletedAt != null && bgJob.CompletedAt.HasValue)
+                        {
+                            if (bgJob.CompletedAt.Value.Date < expiryDate)
+                                DeleteBackgroundJob(bgJob.Id);
+                        }
                     }
-                    else
-                        break;
-                    i = db.ListLength(key);
+                    i--;
                 }
             }
         }
