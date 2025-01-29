@@ -23,9 +23,6 @@
     <DeterministicSourcePaths>true</DeterministicSourcePaths>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <RestoreAdditionalProjectSources>
-      https://nuget.cybercloudsys.com/v3/index.json
-    </RestoreAdditionalProjectSources>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
