@@ -408,5 +408,10 @@ namespace EnqueueIt
                 GlobalConfiguration.Current.Storage.SaveBackgroundJob(job);
             }
         }
+
+        public static void DeleteJob(Guid JobId)
+        {
+            GlobalConfiguration.Current.Storage.DeleteJob(JobId, true);
+        }
     }
 }
