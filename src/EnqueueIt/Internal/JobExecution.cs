@@ -17,11 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace EnqueueIt.Internal
 {
@@ -97,6 +99,9 @@ namespace EnqueueIt.Internal
                 if (obj == null)
                     obj = Activator.CreateInstance(classType);
             }
+
+            GlobalConfiguration.Current.Logger.LogError($"Background job: Class={classType.FullName}, Method={classType}, MetadataToken= {jobArgument.MetadataToken}");
+
             var result = classType.GetMethods().First(m => m.MetadataToken == jobArgument.MetadataToken)
                 .Invoke(obj, jobArgs.ToArray());
             if (result is Task T) 
