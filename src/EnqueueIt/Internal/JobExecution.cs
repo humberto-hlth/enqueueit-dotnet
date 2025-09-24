@@ -100,9 +100,7 @@ namespace EnqueueIt.Internal
                     obj = Activator.CreateInstance(classType);
             }
 
-            GlobalConfiguration.Current.Logger.LogError($"Background job: Class={classType.FullName}, Method={classType}, MetadataToken= {jobArgument.MetadataToken}");
-
-            var result = classType.GetMethods().First(m => m.MetadataToken == jobArgument.MetadataToken)
+            var result = classType.GetMethods().First(m => m.Name == jobArgument.MethodName)
                 .Invoke(obj, jobArgs.ToArray());
             if (result is Task T) 
             {
