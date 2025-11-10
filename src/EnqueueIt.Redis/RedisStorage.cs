@@ -142,7 +142,7 @@ namespace EnqueueIt.Redis
                     if (!string.IsNullOrWhiteSpace(bgJobId))
                     {
                         var bgJob = GetBackgroundJob(Guid.Parse(bgJobId));
-                        if (bgJob.CompletedAt.Value.Date >= time)
+                        if (bgJob != null && bgJob.CompletedAt.HasValue && bgJob.CompletedAt.Value.Date >= time)
                         {
                             string dateKey = bgJob.CompletedAt.Value.ToString("yyyy-MM-dd");
                             if (!result.ContainsKey(dateKey))
