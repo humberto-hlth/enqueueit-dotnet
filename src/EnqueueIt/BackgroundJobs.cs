@@ -413,5 +413,14 @@ namespace EnqueueIt
         {
             GlobalConfiguration.Current.Storage.DeleteJob(JobId, true);
         }
+
+        public static bool Exists(Guid jobId)
+        {
+            var job = GlobalConfiguration.Current.Storage.GetJob(jobId);
+            if (job != null)
+                return true;
+
+            return false;
+        }
     }
 }
