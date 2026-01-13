@@ -2,8 +2,9 @@
   <PropertyGroup>
     <Id>EnqueueIt.Dashboard</Id>
     <Title>EnqueueIt.Dashboard</Title>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
+    <StaticWebAssetBasePath>_content/EnqueueIt.Dashboard</StaticWebAssetBasePath>
     <Version>0.3.3</Version>
     <Authors>Ahmed Abudaqqa</Authors>
     <Product>EnqueueIt.Dashboard</Product>
