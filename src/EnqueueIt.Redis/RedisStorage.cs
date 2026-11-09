@@ -377,9 +377,19 @@ namespace EnqueueIt.Redis
 
         public void DeleteBackgroundJob(Guid backgroundJobId)
         {
+            DeleteBackgroundJob(backgroundJobId, null);
+        }
+
+        private void DeleteBackgroundJob(Guid backgroundJobId, DateTime? processedBefore)
+        {
             var bgJob = GetBackgroundJob(backgroundJobId);
             if (bgJob != null)
             {
+                // Expiry must recheck the record, not trust an earlier status-list snapshot.
+                // Explicit/manual deletion keeps its existing behavior.
+                if (processedBefore.HasValue && (bgJob.Status != JobStatus.Processed ||
+                    !bgJob.CompletedAt.HasValue || bgJob.CompletedAt.Value >= processedBefore.Value))
+                    return;
                 string bgJobId = backgroundJobId.ToString();
                 for (int i = 1; i <= 5; i++)
                 {
@@ -499,23 +509,19 @@ namespace EnqueueIt.Redis
         public void DeleteExpired()
         {
             DateTime expiryDate = DateTime.UtcNow.AddDays(-GlobalConfiguration.Current.Configuration.StorageExpirationInDays);
-            foreach (JobStatus status in new[] { JobStatus.Processed, JobStatus.Canceled, JobStatus.Interrupted, JobStatus.Failed })
+            string key = JobStatus.Processed.ToString("D");
+            long i = db.ListLength(key) - 1;
+            while (i >= 0)
             {
-                string key = status.ToString("D");
-                long i = db.ListLength(key) - 1;
-                while (i >= 0) {
-                    var bgJobId = db.ListGetByIndex(key, i);
-                    if (!string.IsNullOrWhiteSpace(bgJobId))
-                    {
-                        var bgJob = GetBackgroundJob(Guid.Parse(bgJobId), false);
-                        if (bgJob != null && bgJob.CompletedAt != null && bgJob.CompletedAt.HasValue)
-                        {
-                            if (bgJob.CompletedAt.Value.Date < expiryDate)
-                                DeleteBackgroundJob(bgJob.Id);
-                        }
-                    }
-                    i--;
+                var bgJobId = db.ListGetByIndex(key, i);
+                if (!string.IsNullOrWhiteSpace(bgJobId))
+                {
+                    var bgJob = GetBackgroundJob(Guid.Parse(bgJobId), false);
+                    if (bgJob != null && bgJob.Status == JobStatus.Processed &&
+                        bgJob.CompletedAt.HasValue && bgJob.CompletedAt.Value < expiryDate)
+                        DeleteBackgroundJob(bgJob.Id, expiryDate);
                 }
+                i--;
             }
         }
 
